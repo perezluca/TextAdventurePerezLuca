@@ -107,6 +107,7 @@ public class Game {
             case USE:
                 use(command);
                 break;
+
         }
 
         return wantToQuit;
@@ -149,10 +150,10 @@ public class Game {
     }
 
     private void printHelp() {
-        System.out.println("You are lost");
+        System.out.println("You are lost.");
         System.out.println("You are in a prison.");
         System.out.println();
-        System.out.println("Your command words are: go, quit, help, ?, look, grab, drop, turnon, use.");
+        System.out.println("Your command words are: go, quit, help, ?, look, grab, drop, turnon, and use.");
         parser.showCommands();
     }
 
