@@ -13,7 +13,7 @@ public class Game {
         game.play();
     }
     private void createRooms() {
-        Room prison = new Room("You are lying on a hard floor. Your head aches and your vision is blurred. You need to stand up and look around.", "You are standing in the middle of a large building with a high ceiling and gray walls. There are two levels of cells. " +
+        Room prison = new Room("You are standing in the middle of a large building with a high ceiling and gray walls. Look around.", "There are two levels of cells. " +
                 "The rusted cell doors are open and you can see old bunk beds. The fluorescent ceiling lights flicker periodically. There are no windows in sight. It appears to be a prison, but you have no recollection of how you got there. There are four dimly lit concrete tunnels leading north, " +
                 "east, south, and west.");
         Room northRoom = new Room("You enter the North Room. It is a small room that has a strong citrus scent. Investigate the room further.", "The North Room appears to be a janitorial closet. There are folded newspapers and cleaning supplies spilled on the floor. " +
@@ -29,9 +29,9 @@ public class Game {
                 " dark staircase leading downwards to the west.");
         Room basement = new Room("You enter the basement. You see a heavy vault door on the far wall. There are bullet holes and slashes on its surface. Investigate the room further.", "The basement is grimy and the air is heavy. Upon further investigation, a " +
                 "keyhole emerges on the door, hidden by the damage caused to it. You see shattered homemade melee weapons and unusable police-issued firearms haphazardly thrown about, explaining the damage. It appears the prisoners and guards attempted to escape the prison together.");
-        Room outside = new Room("You open the vault door and walk up a metal stairwell to exit the prison. As you reach the top, you turn around and see a dense forest. There is a lazy river flowing downstream. Large sequoia trees block the bright sunlight of the afternoon. " +
-                "The air feels fresh and you can hear the melodious calls of birds. You see a grassy clearing with colorful plants after the treeline ends. You make out the peaks of mountains in the distance. Turning around again, you see the barbed wire fences and chain-linked walls of " +
-                "the prison in front of you. To your left, you hear the piercing whistle and sounds of a locomotive and see its smoke dissipating into the cloudless sky. You begin walking in that direction. You are free.";
+        Room outside = new Room("You open the vault door and walk up a metal stairwell to exit the prison. As you reach the top, you turn around and see a dense forest. There is a lazy river flowing downstream. Large sequoia trees block the bright sunlight of the afternoon. The air " +
+                "feels fresh and you can hear the melodious calls of birds. You see a grassy clearing with colorful plants after the treeline ends. You make out the peaks of mountains in the distance. Turning " +
+                "around again, you see the barbed wire fences and chain-linked walls of the prison in front of you. To your left, you hear the piercing whistle and sounds of a locomotive and see its smoke dissipating into the cloudless sky. You begin walking in that direction. You are free.", " ");
 
         prison.setExit("north", northRoom);
         prison.setExit("west", westRoom);
@@ -113,6 +113,23 @@ public class Game {
         return wantToQuit;
     }
 
+    private void use(Command command) {
+        if(!command.hasSecondWord()) {
+            System.out.println("Use what?");
+            return;
+        }
+
+        String key = command.getSecondWord();
+        Item useItem = currentRoom.getItem(key);
+
+        if (useItem == null) {
+            System.out.println("You can't use " + command.getSecondWord());
+        }
+        else {
+            player.setItem(key, useItem);
+        }
+    }
+
     private void grab(Command command) {
         if(!command.hasSecondWord()) {
             // if there is no second word, we don't know where to go...
@@ -153,7 +170,7 @@ public class Game {
         System.out.println("You are lost.");
         System.out.println("You are in a prison.");
         System.out.println();
-        System.out.println("Your command words are: go, quit, help, ?, look, grab, drop, turnon, and use.");
+        System.out.println("Your command words are:");
         parser.showCommands();
     }
 
@@ -202,7 +219,7 @@ public class Game {
     private void printWelcome() {
         System.out.println();
         System.out.println("Welcome to my text adventure game!");
-        System.out.println("You will find yourself in a prison, desperate to escape!");
+        System.out.println("You will find yourself in a prison, desperate to escape. You wake up. You are lying on a hard floor. Your head aches and your vision is blurred. You need to stand up and look around.");
         System.out.println("Type \"help\" if you need assistance");
         System.out.println();
         System.out.println("");
