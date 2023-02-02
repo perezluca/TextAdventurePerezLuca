@@ -2,6 +2,10 @@ public class Game {
     private Room currentRoom;
     private Parser parser;
     private Player player;
+    Room outside;
+    boolean flashlight = false;
+    boolean lantern = false;
+    boolean key = false;
     public Game(){
         parser = new Parser();
         player = new Player();
@@ -14,35 +18,47 @@ public class Game {
     }
     private void createRooms() {
         Room prison = new Room("You are standing in the middle of a large building with a high ceiling and gray walls. Look around.", "There are two levels of cells. " +
-                "The rusted cell doors are open and you can see old bunk beds. The fluorescent ceiling lights flicker periodically. There are no windows in sight. It appears to be a prison, but you have no recollection of how you got there. There are four dimly lit concrete tunnels leading north, " +
+                "The rusted cell doors are open and you can see old bunk beds. The fluorescent ceiling lights flicker periodically. There are no windows in sight. It appears to be a prison, " +
+                "but you have no recollection of how you got there. There are four dimly lit concrete tunnels leading north, " +
                 "east, south, and west.");
-        Room northRoom = new Room("You enter the North Room. It is a small room that has a strong citrus scent. Investigate the room further.", "The North Room appears to be a janitorial closet. There are folded newspapers and cleaning supplies spilled on the floor. " +
+        Room northRoom = new Room("You enter the North Room. It is a small room that has a strong citrus scent. Investigate the room further.", "The North Room appears to be a janitorial closet. " +
+                "There are folded newspapers and cleaning supplies spilled on the floor. " +
                 "One light bulb is still functioning and you can barely make out the collapsed staircase heading north.");
-        Room eastRoom = new Room("You enter the East Room. It is brightly lit and the items inside are damaged. Investigate the room further.", "The East Room appears to be a control room for the prison guards to keep watch on the inmates. There are large cracked TV’s hanging " +
-                "on the walls and face-down computer monitors on several long desks. There are papers and files strewn about which show prisoner information. It looks like the guards left in a hurry. There is a door leading north. You cannot open it because it is jammed against something on the other " +
+        Room eastRoom = new Room("You enter the East Room. It is brightly lit and the items inside are damaged. Investigate the room further.", "The East Room appears to be a control room for the " +
+                "prison guards to keep watch on the inmates. There are large cracked TV’s hanging " +
+                "on the walls and face-down computer monitors on several long desks. There are papers and files strewn about which show prisoner information. It looks like the guards left in a hurry. There is a door " +
+                "leading north. You cannot open it because it is jammed against something on the other " +
                 "side. You spot a rusted key on the floor.");
-        Room southRoom = new Room("You enter the South Room. You vaguely see an old lantern on an overturned trash can in the corner of the room as you walk in. You cannot see anything else as it is too dark.", "You are standing in a spacious room. " +
-                "You make out the outlines of weightlifting and exercise equipment. It appears to be the prison gym. The weight plates are still on the barbells, which you find strange, leading you to believe that the prisoners left in a hurry. There are used towels and worn prison uniforms " +
+        Room southRoom = new Room("You enter the South Room. You vaguely see an old lantern on an overturned trash can in the corner of the room as you walk in. You cannot see anything else as it is too " +
+                "dark.", "You are standing in a spacious room. " +
+                "You make out the outlines of weightlifting and exercise equipment. It appears to be the prison gym. The weight plates are still on the barbells, which you find strange, leading you to believe that the " +
+                "prisoners left in a hurry. There are used towels and worn prison uniforms " +
                 "laying on the floor and on various equipment. There is a dark staircase leading downwards to the east.");
-        Room westRoom = new Room("You enter the West Room. You see a dusty flashlight on the ground as you get to the entrance of the room. You cannot see into the room you are about to enter as it is too dark.", "You are standing in an unlit room. You see rows of pews " +
-                "and crosses hung from the ceiling. It appears to be the prison chapel. There are paintings of biblical figures and scenes on the walls. There are several windows on the north wall, but they are completely boarded shut with a large red “X” spray painted over them. There is a" +
+        Room westRoom = new Room("You enter the West Room. You see a dusty flashlight on the ground as you get to the entrance of the room. You cannot see into the room you are about to enter as it is too " +
+                "dark.", "You are standing in an unlit room. You see rows of pews " +
+                "and crosses hung from the ceiling. It appears to be the prison chapel. There are paintings of biblical figures and scenes on the walls. There are several windows on the north wall, but they are completely " +
+                "boarded shut with a large red “X” spray painted over them. There is a" +
                 " dark staircase leading downwards to the west.");
-        Room basement = new Room("You enter the basement. You see a heavy vault door on the far wall. There are bullet holes and slashes on its surface. Investigate the room further.", "The basement is grimy and the air is heavy. Upon further investigation, a " +
-                "keyhole emerges on the door, hidden by the damage caused to it. You see shattered homemade melee weapons and unusable police-issued firearms haphazardly thrown about, explaining the damage. It appears the prisoners and guards attempted to escape the prison together.");
-        Room outside = new Room("You open the vault door and walk up a metal stairwell to exit the prison. As you reach the top, you turn around and see a dense forest. There is a lazy river flowing downstream. Large sequoia trees block the bright sunlight of the afternoon. The air " +
+        Room basement = new Room("You enter the basement. You see a heavy vault door on the far wall. There are bullet holes and slashes on its surface. Investigate the room further.", "The b" +
+                "asement is grimy and the air is heavy. Upon further investigation, a " +
+                "keyhole emerges on the door, hidden by the damage caused to it. You see shattered homemade melee weapons and unusable police-issued firearms haphazardly thrown about, explaining the damage. " +
+                "It appears the prisoners and guards attempted to escape the prison together.");
+        outside = new Room("You open the vault door and walk up a metal stairwell to exit the prison. As you reach the top, you turn around and see a dense forest. There is a lazy river flowing " +
+                "downstream. Large sequoia trees block the bright sunlight of the afternoon. The air " +
                 "feels fresh and you can hear the melodious calls of birds. You see a grassy clearing with colorful plants after the treeline ends. You make out the peaks of mountains in the distance. Turning " +
-                "around again, you see the barbed wire fences and chain-linked walls of the prison in front of you. To your left, you hear the piercing whistle and sounds of a locomotive and see its smoke dissipating into the cloudless sky. You begin walking in that direction. You are free.", " ");
+                "around again, you see the barbed wire fences and chain-linked walls of the prison in front of you. To your left, you hear the piercing whistle and sounds of a locomotive and see its smoke dissipating " +
+                "into the cloudless sky. You begin walking in that direction. You are free.", " ");
 
         prison.setExit("north", northRoom);
         prison.setExit("west", westRoom);
         prison.setExit("south", southRoom);
         prison.setExit("east", eastRoom);
         northRoom.setExit("south", prison);
-        westRoom.setExit("south", prison);
-        westRoom.setExit("west", basement);
-        southRoom.setExit("south", prison);
-        southRoom.setExit("east", basement);
-        eastRoom.setExit("south", prison);
+        westRoom.setExit("east", prison);
+        westRoom.setExit("south", basement);
+        southRoom.setExit("north", prison);
+        southRoom.setExit("west", basement);
+        eastRoom.setExit("west", prison);
         basement.setExit("east", southRoom);
         basement.setExit("west", westRoom);
         basement.setExit("north", outside);
@@ -66,6 +82,12 @@ public class Game {
         while(!finished) {
             Command command = parser.getCommand();
             finished = processCommand(command);
+            if(currentRoom.equals(outside)) {
+                System.out.println("You open the vault door and walk up a metal stairwell to exit the prison. As you reach the top, you turn around and see a dense forest. There is a lazy river flowing downstream. " +
+                        "Large sequoia trees block the bright sunlight of the afternoon. The air feels fresh and you can hear the melodious calls of birds. You see a grassy clearing with colorful plants after the treeline " +
+                        "ends. You make out the peaks of mountains in the distance. Turning around again, you see the barbed wire fences and chain-linked walls of the prison in front of you. To your left, you hear the " +
+                        "piercing whistle and sounds of a locomotive and see its smoke dissipating into the cloudless sky. You begin walking in that direction. You are free. ");
+            }
         }
         System.out.println("Thanks for playing!");
     }
@@ -128,6 +150,11 @@ public class Game {
         else {
             player.setItem(key, useItem);
         }
+
+        System.out.println(currentRoom.getLongDescription());
+        System.out.println(player.getItemString());
+        System.out.println();
+        System.out.println();
     }
 
     private void grab(Command command) {
@@ -182,6 +209,8 @@ public class Game {
 
         System.out.println(currentRoom.getLongDescription());
         System.out.println(player.getItemString());
+        System.out.println();
+        System.out.println();
     }
 
     private void goRoom(Command command)

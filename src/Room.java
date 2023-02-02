@@ -32,7 +32,7 @@ public class Room {
         return returnString;
     }
     public String getLongDescription(){
-        return longDescription + "\n" + getExitString() +"\n" + getItemString();
+        return longDescription + "\n" + getExitString() + "\n" + getItemString();
     }
     public void setExit(String direction, Room neighbor){
         exits.put(direction, neighbor);
