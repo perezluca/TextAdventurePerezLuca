@@ -57,7 +57,7 @@ public class Game {
         westRoom.setExit("east", prison);
         westRoom.setExit("south", basement);
         southRoom.setExit("north", prison);
-        southRoom.setExit("west", basement);
+        southRoom.setExit("east", basement);
         eastRoom.setExit("west", prison);
         basement.setExit("east", southRoom);
         basement.setExit("west", westRoom);
@@ -82,12 +82,6 @@ public class Game {
         while(!finished) {
             Command command = parser.getCommand();
             finished = processCommand(command);
-            if(currentRoom.equals(outside)) {
-                System.out.println("You open the vault door and walk up a metal stairwell to exit the prison. As you reach the top, you turn around and see a dense forest. There is a lazy river flowing downstream. " +
-                        "Large sequoia trees block the bright sunlight of the afternoon. The air feels fresh and you can hear the melodious calls of birds. You see a grassy clearing with colorful plants after the treeline " +
-                        "ends. You make out the peaks of mountains in the distance. Turning around again, you see the barbed wire fences and chain-linked walls of the prison in front of you. To your left, you hear the " +
-                        "piercing whistle and sounds of a locomotive and see its smoke dissipating into the cloudless sky. You begin walking in that direction. You are free. ");
-            }
         }
         System.out.println("Thanks for playing!");
     }
@@ -144,7 +138,7 @@ public class Game {
         String key = command.getSecondWord();
         Item useItem = currentRoom.getItem(key);
 
-        if (useItem == null) {
+        if (!useItem.equals("key")) {
             System.out.println("You can't use " + command.getSecondWord());
         }
         else {
@@ -233,6 +227,15 @@ public class Game {
             currentRoom = nextRoom;
             System.out.println(currentRoom.getShortDescription());
         }
+
+        if(currentRoom.equals(outside) && player.getHashMap().containsKey("key")) {
+            System.out.println("You open the vault door and walk up a metal stairwell to exit the prison. As you reach the top, you turn around and see a dense forest. There is a lazy river flowing downstream. " +
+                    "Large sequoia trees block the bright sunlight of the afternoon. The air feels fresh and you can hear the melodious calls of birds. You see a grassy clearing with colorful plants after the treeline " +
+                    "ends. You make out the peaks of mountains in the distance. Turning around again, you see the barbed wire fences and chain-linked walls of the prison in front of you. To your left, you hear the " +
+                    "piercing whistle and sounds of a locomotive and see its smoke dissipating into the cloudless sky. You begin walking in that direction. You are free. ");
+        }
+
+
     }
 
     private boolean quit(Command command) {
