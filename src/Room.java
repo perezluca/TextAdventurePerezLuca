@@ -15,7 +15,7 @@ public class Room {
     }
 
     //THIS IS THE CODE FOR ROOMS/EXIT STUFF
-    private String getExitString(){
+    private String getExitString() {
         String returnString = "Exits: ";
         Set<String> keys = exits.keySet();
         for(String exit: keys){
@@ -37,7 +37,7 @@ public class Room {
     public void setExit(String direction, Room neighbor){
         exits.put(direction, neighbor);
     }
-    public Room getExit(String direction){
+    public Room getExit(String direction) {
         return exits.get(direction);
     }
     public String getShortDescription(){

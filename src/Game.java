@@ -3,10 +3,19 @@ public class Game {
     private Parser parser;
     private Player player;
     Room outside;
+    Room basement;
+
+    Room corridor;
+
+    /*
     boolean flashlight = false;
     boolean lantern = false;
     boolean key = false;
+    */
+
+
     public Game(){
+
         parser = new Parser();
         player = new Player();
     }
@@ -39,10 +48,11 @@ public class Game {
                 "and crosses hung from the ceiling. It appears to be the prison chapel. There are paintings of biblical figures and scenes on the walls. There are several windows on the north wall, but they are completely " +
                 "boarded shut with a large red “X” spray painted over them. There is a" +
                 " dark staircase leading downwards to the west.");
-        Room basement = new Room("You enter the basement. You see a heavy vault door on the far wall. There are bullet holes and slashes on its surface. Investigate the room further.", "The b" +
+        basement = new Room("You enter the basement. You see a heavy vault door on the far wall. There are bullet holes and slashes on its surface. Investigate the room further.", "The b" +
                 "asement is grimy and the air is heavy. Upon further investigation, a " +
                 "keyhole emerges on the door, hidden by the damage caused to it. You see shattered homemade melee weapons and unusable police-issued firearms haphazardly thrown about, explaining the damage. " +
                 "It appears the prisoners and guards attempted to escape the prison together.");
+        corridor = new Room("There is a long corridor.", "The corridor is dark and you can see the exit.");
         outside = new Room("You open the vault door and walk up a metal stairwell to exit the prison. As you reach the top, you turn around and see a dense forest. There is a lazy river flowing " +
                 "downstream. Large sequoia trees block the bright sunlight of the afternoon. The air " +
                 "feels fresh and you can hear the melodious calls of birds. You see a grassy clearing with colorful plants after the treeline ends. You make out the peaks of mountains in the distance. Turning " +
@@ -61,7 +71,8 @@ public class Game {
         eastRoom.setExit("west", prison);
         basement.setExit("east", southRoom);
         basement.setExit("west", westRoom);
-        basement.setExit("north", outside);
+        basement.setExit("north", corridor);
+        corridor.setExit("north", outside);
 
         Item lantern = new Item();
         Item flashlight = new Item();
@@ -136,19 +147,28 @@ public class Game {
         }
 
         String key = command.getSecondWord();
-        Item useItem = currentRoom.getItem(key);
+        //Item useItem = currentRoom.getItem(key);
+        System.out.println(key);
 
-        if (!useItem.equals("key")) {
+        if (!key.equals("key")) {
             System.out.println("You can't use " + command.getSecondWord());
         }
+
+        else if(currentRoom.equals(corridor) && player.getHashMap().containsKey("key")) {
+            System.out.println("You open the vault door and walk up a metal stairwell to exit the prison. As you reach the top, you turn around and see a dense forest. There is a lazy river flowing downstream. " +
+                    "Large sequoia trees block the bright sunlight of the afternoon. The air feels fresh and you can hear the melodious calls of birds. You see a grassy clearing with colorful plants after the treeline " +
+                    "ends. You make out the peaks of mountains in the distance. Turning around again, you see the barbed wire fences and chain-linked walls of the prison in front of you. To your left, you hear the " +
+                    "piercing whistle and sounds of a locomotive and see its smoke dissipating into the cloudless sky. You begin walking in that direction. You are free.");
+        }
         else {
-            player.setItem(key, useItem);
+            System.out.println("You can't use the key here.");
         }
 
         System.out.println(currentRoom.getLongDescription());
         System.out.println(player.getItemString());
         System.out.println();
         System.out.println();
+
     }
 
     private void grab(Command command) {
@@ -223,20 +243,15 @@ public class Game {
         if (nextRoom == null) {
             System.out.println("There is no door!");
         }
+
+
+
         else {
-            currentRoom = nextRoom;
-            System.out.println(currentRoom.getShortDescription());
+                currentRoom = nextRoom;
+                System.out.println(currentRoom.getShortDescription());
+            }
+
         }
-
-        if(currentRoom.equals(outside) && player.getHashMap().containsKey("key")) {
-            System.out.println("You open the vault door and walk up a metal stairwell to exit the prison. As you reach the top, you turn around and see a dense forest. There is a lazy river flowing downstream. " +
-                    "Large sequoia trees block the bright sunlight of the afternoon. The air feels fresh and you can hear the melodious calls of birds. You see a grassy clearing with colorful plants after the treeline " +
-                    "ends. You make out the peaks of mountains in the distance. Turning around again, you see the barbed wire fences and chain-linked walls of the prison in front of you. To your left, you hear the " +
-                    "piercing whistle and sounds of a locomotive and see its smoke dissipating into the cloudless sky. You begin walking in that direction. You are free. ");
-        }
-
-
-    }
 
     private boolean quit(Command command) {
         if(command.hasSecondWord()) {
