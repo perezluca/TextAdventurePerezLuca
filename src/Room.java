@@ -31,7 +31,7 @@ public class Room {
         }
         return returnString;
     }
-    public String getLongDescription(){
+    public String getLongDescription() {
         return longDescription + "\n" + getExitString() + "\n" + getItemString();
     }
     public void setExit(String direction, Room neighbor){

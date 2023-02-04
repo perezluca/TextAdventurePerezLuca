@@ -2,11 +2,8 @@ public class Game {
     private Room currentRoom;
     private Parser parser;
     private Player player;
-    Room outside;
     Room basement;
-
-    Room corridor;
-
+    Room westRoom;
     /*
     boolean flashlight = false;
     boolean lantern = false;
@@ -33,7 +30,7 @@ public class Game {
         Room northRoom = new Room("You enter the North Room. It is a small room that has a strong citrus scent. Investigate the room further.", "The North Room appears to be a janitorial closet. " +
                 "There are folded newspapers and cleaning supplies spilled on the floor. " +
                 "One light bulb is still functioning and you can barely make out the collapsed staircase heading north.");
-        Room eastRoom = new Room("You enter the East Room. It is brightly lit and the items inside are damaged. Investigate the room further.", "The East Room appears to be a control room for the " +
+        Room eastRoom = new Room("You enter the East Room. It is dimly lit and the items inside are damaged. Investigate the room further.", "The East Room appears to be a control room for the " +
                 "prison guards to keep watch on the inmates. There are large cracked TV’s hanging " +
                 "on the walls and face-down computer monitors on several long desks. There are papers and files strewn about which show prisoner information. It looks like the guards left in a hurry. There is a door " +
                 "leading north. You cannot open it because it is jammed against something on the other " +
@@ -43,7 +40,7 @@ public class Game {
                 "You make out the outlines of weightlifting and exercise equipment. It appears to be the prison gym. The weight plates are still on the barbells, which you find strange, leading you to believe that the " +
                 "prisoners left in a hurry. There are used towels and worn prison uniforms " +
                 "laying on the floor and on various equipment. There is a dark staircase leading downwards to the east.");
-        Room westRoom = new Room("You enter the West Room. You see a dusty flashlight on the ground as you get to the entrance of the room. You cannot see into the room you are about to enter as it is too " +
+        Room westRoom = new Room("You enter the West Room. You barely see into the room you are about to enter as it is too " +
                 "dark.", "You are standing in an unlit room. You see rows of pews " +
                 "and crosses hung from the ceiling. It appears to be the prison chapel. There are paintings of biblical figures and scenes on the walls. There are several windows on the north wall, but they are completely " +
                 "boarded shut with a large red “X” spray painted over them. There is a" +
@@ -52,12 +49,6 @@ public class Game {
                 "asement is grimy and the air is heavy. Upon further investigation, a " +
                 "keyhole emerges on the door, hidden by the damage caused to it. You see shattered homemade melee weapons and unusable police-issued firearms haphazardly thrown about, explaining the damage. " +
                 "It appears the prisoners and guards attempted to escape the prison together.");
-        corridor = new Room("There is a long corridor.", "The corridor is dark and you can see the exit.");
-        outside = new Room("You open the vault door and walk up a metal stairwell to exit the prison. As you reach the top, you turn around and see a dense forest. There is a lazy river flowing " +
-                "downstream. Large sequoia trees block the bright sunlight of the afternoon. The air " +
-                "feels fresh and you can hear the melodious calls of birds. You see a grassy clearing with colorful plants after the treeline ends. You make out the peaks of mountains in the distance. Turning " +
-                "around again, you see the barbed wire fences and chain-linked walls of the prison in front of you. To your left, you hear the piercing whistle and sounds of a locomotive and see its smoke dissipating " +
-                "into the cloudless sky. You begin walking in that direction. You are free.", " ");
 
         prison.setExit("north", northRoom);
         prison.setExit("west", westRoom);
@@ -71,16 +62,16 @@ public class Game {
         eastRoom.setExit("west", prison);
         basement.setExit("east", southRoom);
         basement.setExit("west", westRoom);
-        basement.setExit("north", corridor);
-        corridor.setExit("north", outside);
 
         Item lantern = new Item();
         Item flashlight = new Item();
         Item key = new Item();
+        Item bomb = new Item();
 
         eastRoom.setItem("key", key);
         southRoom.setItem("lantern", lantern);
         westRoom.setItem("flashlight", flashlight);
+        northRoom.setItem("bomb", bomb);
 
         currentRoom = prison;
     }
@@ -154,11 +145,12 @@ public class Game {
             System.out.println("You can't use " + command.getSecondWord());
         }
 
-        else if(currentRoom.equals(corridor) && player.getHashMap().containsKey("key")) {
+        else if(currentRoom.equals(basement) && player.getHashMap().containsKey("key")) {
             System.out.println("You open the vault door and walk up a metal stairwell to exit the prison. As you reach the top, you turn around and see a dense forest. There is a lazy river flowing downstream. " +
                     "Large sequoia trees block the bright sunlight of the afternoon. The air feels fresh and you can hear the melodious calls of birds. You see a grassy clearing with colorful plants after the treeline " +
                     "ends. You make out the peaks of mountains in the distance. Turning around again, you see the barbed wire fences and chain-linked walls of the prison in front of you. To your left, you hear the " +
                     "piercing whistle and sounds of a locomotive and see its smoke dissipating into the cloudless sky. You begin walking in that direction. You are free.");
+            System.exit(0);
         }
         else {
             System.out.println("You can't use the key here.");
@@ -186,6 +178,15 @@ public class Game {
         }
         else {
             player.setItem(key, grabItem);
+            System.out.println("You grabbed the " + key);
+
+            if(player.getHashMap().containsKey("bomb")) {
+                System.out.println("The bomb exploded. You died.");
+                System.exit(0);
+            }
+            if (player.getHashMap().containsKey("lantern")) {
+                System.out.println("Luckily, you were able to avoid the booby traps and see more clearly into the room with the lantern.");
+            }
         }
     }
 
@@ -200,7 +201,7 @@ public class Game {
         Item dropItem = player.getItem(key);
 
         if (dropItem == null) {
-            System.out.println("You can't drop " + command.getSecondWord());
+            System.out.println("You can't drop the " + command.getSecondWord());
         }
         else {
             currentRoom.setItem(key, dropItem);
@@ -247,11 +248,11 @@ public class Game {
 
 
         else {
-                currentRoom = nextRoom;
-                System.out.println(currentRoom.getShortDescription());
-            }
-
+            currentRoom = nextRoom;
+            System.out.println(currentRoom.getShortDescription());
         }
+
+    }
 
     private boolean quit(Command command) {
         if(command.hasSecondWord()) {
